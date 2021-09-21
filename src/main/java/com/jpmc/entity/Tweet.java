@@ -8,8 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -25,6 +25,7 @@ public class Tweet {
     private Long id;
 
     @Column(name = "tweet_data")
+    @Size(max = 160, message = "Tweet can not be longer then 160 characters")
     private String tweetData;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -5,8 +5,10 @@ services:
     build: .
     container_name: tweet_jpa
     ports:
-      - "18080:8080"
-      - "18787:8787"
+      - "8080:8080"
+      - "8787:8787"
+    expose:
+      - 8080
     restart: always
     depends_on:
       - postgresdb
@@ -17,7 +19,7 @@ services:
     environment:
       - POSTGRES_USER=siva
       - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=appdb
       - PGDATA=/data/postgres
     volumes:
       - ~/data/postgres:/data/postgres

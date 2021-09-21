@@ -9,14 +9,17 @@ import com.jpmc.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+@Validated
 @RestController
 @RequestMapping("/api/tweet")
 @Slf4j
@@ -51,15 +54,17 @@ public class TweetController {
 
     @PostMapping("")
     @ResponseStatus(CREATED)
-    public Tweet createTweet(@RequestBody TweetRequestBody tweetRequestBody, Principal user) {
+    public TweetModel createTweet(@Valid @RequestBody TweetRequestBody tweetRequestBody, Principal user) {
         log.info("process=create-tweetRequestBody, tweet_data={}", tweetRequestBody.getTweetData());
-        return tweetService.createTweet(tweetRequestBody, user);
+        Tweet tweet = tweetService.createTweet(tweetRequestBody, user);
+        return new TweetModel(tweet) ;
     }
 
     @PutMapping("/{id}")
-    public Tweet updateTweet(@PathVariable Long id, @RequestBody TweetRequestBody tweetRequestBody, Principal user) {
+    public TweetModel updateTweet(@Valid @PathVariable Long id, @RequestBody TweetRequestBody tweetRequestBody, Principal user) {
         log.info("process=update-tweet, tweet_id={}", id);
-        return tweetService.updateTweet(id, tweetRequestBody);
+        Tweet tweet = tweetService.updateTweet(id, tweetRequestBody);
+        return new TweetModel(tweet) ;
     }
 
     @DeleteMapping("/{id}")

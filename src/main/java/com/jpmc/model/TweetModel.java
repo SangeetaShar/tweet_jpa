@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Data
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 public class TweetModel {
 
     @JsonProperty("tweetData")
+    @Size(max = 160, message = "Tweet can not be longer then 160 characters")
     private String tweetData;
 
     @JsonProperty("tweetDate")
