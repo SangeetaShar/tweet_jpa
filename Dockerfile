@@ -1,8 +1,8 @@
-FROM fabric8/java-alpine-openjdk8-jre
+FROM openjdk:17-jdk-slim
+EXPOSE 8080
 VOLUME /tmp
-ADD target/tweet_jpa-1.0-exec.jar tweet.jar
-RUN sh -c 'touch /tweet.jar'
-ENV JAVA_OPTS="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8787,suspend=n"
-ENV SPRING_PROFILES_ACTIVE "docker"
-EXPOSE 8080 8787
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=$SPRING_PROFILES_ACTIVE -jar /tweet.jar" ]
+COPY target/tweet_jpa-1.0-exec.jar app.jar
+RUN sh -c 'touch /app.jar'
+ENV JAVA_OPTS=""
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+HEALTHCHECK --interval=1m --timeout=3s CMD wget -q -T 3 -s http://localhost:8080
