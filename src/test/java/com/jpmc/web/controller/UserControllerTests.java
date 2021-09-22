@@ -57,13 +57,14 @@ public class UserControllerTests {
     }
 
     @Test
-    public void should_get_user_by_id() throws Exception {
+    public void should_get_user_by_name() throws Exception {
+        given(userService.findByUsername(existingUser.getUsername())).willReturn(existingUser);
         given(userService.getUserById(existingUser.getId())).willReturn(Optional.of(existingUser));
 
         this.mockMvc
-                .perform(get("/api/users/"+existingUser.getId()))
+                .perform(get("/api/users/"+existingUser.getUsername()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(existingUser.getId())))
+                .andExpect(jsonPath("$.username", is(existingUser.getUsername())))
                 .andExpect(jsonPath("$.name", is(existingUser.getName())));
     }
 
@@ -77,30 +78,32 @@ public class UserControllerTests {
                         .content(objectMapper.writeValueAsString(newUser))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.username", notNullValue()))
                 .andExpect(jsonPath("$.name", is(newUser.getName())));
     }
 
     @Test
     public void should_update_user() throws Exception {
+        given(userService.findByUsername(existingUser.getUsername())).willReturn(existingUser);
         given(userService.updateUser(existingUser)).willReturn(existingUser);
 
         this.mockMvc
-                .perform(put("/api/users/"+existingUser.getId())
+                .perform(put("/api/users/"+existingUser.getUsername())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(existingUser))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(existingUser.getId())))
+                .andExpect(jsonPath("$.username", is(existingUser.getUsername())))
                 .andExpect(jsonPath("$.name", is(existingUser.getName())));
     }
 
     @Test
     public void should_delete_user() throws Exception {
+        given(userService.findByUsername(existingUser.getUsername())).willReturn(existingUser);
         doNothing().when(userService).deleteUser(existingUser.getId());
 
         this.mockMvc
-                .perform(delete("/api/users/"+existingUser.getId()))
+                .perform(delete("/api/users/"+existingUser.getUsername()))
                 .andExpect(status().isOk());
     }
 

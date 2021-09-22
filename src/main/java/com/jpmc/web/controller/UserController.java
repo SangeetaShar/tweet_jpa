@@ -1,6 +1,9 @@
 package com.jpmc.web.controller;
 
+import com.jpmc.entity.Tweet;
 import com.jpmc.entity.User;
+import com.jpmc.model.TweetModel;
+import com.jpmc.model.UserModel;
 import com.jpmc.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -8,12 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -32,48 +33,58 @@ public class UserController {
 
     @GetMapping("")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public List<User> getUsers() {
+    public List<UserModel> getUsers() {
         log.info("process=get-users");
-        return userService.getAllUsers();
+        List<UserModel> userModels = new ArrayList<>();
+        for(User localUser : userService.getAllUsers()){
+            userModels.add(new UserModel(localUser));
+        }
+        return userModels;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{username}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        log.info("process=get-user, user_id={}", id);
-        Optional<User> user = userService.getUserById(id);
-        return user.map( u -> ResponseEntity.ok(u))
-                   .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<UserModel> getUser(@PathVariable String username) {
+        log.info("process=get-user, userName={}", username);
+        User user = userService.findByUsername(username);
+        return user!= null ? ResponseEntity.ok(new UserModel(user))
+                   : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/myData")
-    public ResponseEntity<User> getCurrentUser(Principal principalUser) {
-        log.info("process=get-user, name={}", principalUser.getName());
-        User user = userService.findByUsername(principalUser.getName());
-        return (user != null ?ResponseEntity.ok(user)
-                : ResponseEntity.notFound().build());
-    }
     @PostMapping("")
     @ResponseStatus(CREATED)
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public User createUser(@RequestBody User user) {
+    public UserModel createUser(@RequestBody User user) {
         log.info("process=create-user, user={}", user);
-        return userService.createUser(user);
+        return new UserModel(userService.createUser(user));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{username}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        log.info("process=update-user, user_id={}", id);
-        user.setId(id);
-        return userService.updateUser(user);
+    public UserModel updateUser(@PathVariable String username, @RequestBody User user) {
+        log.info("process=upadte-user, userName={}", username);
+        User existingUser = userService.findByUsername(username);
+        if (user != null){
+            Long id = existingUser.getId();
+            log.info("process=update-user, user_id={}", id);
+            user.setId(id);
+            return new UserModel(userService.updateUser(user));
+        } else {
+            return new UserModel(existingUser);
+        }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{username}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public void deleteUser(@PathVariable Long id) {
-        log.info("process=delete-user, user_id={}", id);
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable String username) {
+        log.info("process=delete-user, userName={}", username);
+        User user = userService.findByUsername(username);
+        if (user != null){
+            Long id = user.getId();
+            log.info("process=delete-user, user_id={}", id);
+            userService.deleteUser(id);
+        }
+
     }
 
 }

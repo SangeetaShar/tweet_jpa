@@ -44,14 +44,6 @@ public class TweetController {
         return tweetService.getMyTweets(user);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TweetModel> getTweet(@PathVariable Long id) {
-        log.info("process=get-tweetById, tweet_id={}", id);
-        Optional<TweetModel> user = tweetService.getTweetById(id);
-        return user.map(u -> ResponseEntity.ok(u))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PostMapping("")
     @ResponseStatus(CREATED)
     public TweetModel createTweet(@Valid @RequestBody TweetRequestBody tweetRequestBody, Principal user) {
