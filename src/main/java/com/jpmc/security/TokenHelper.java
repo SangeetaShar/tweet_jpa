@@ -1,7 +1,6 @@
 package com.jpmc.security;
 
 import com.jpmc.config.TimeProvider;
-import com.jpmc.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

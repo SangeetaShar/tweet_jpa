@@ -1,8 +1,6 @@
 package com.jpmc.web.controller;
 
-import com.jpmc.entity.Tweet;
 import com.jpmc.entity.User;
-import com.jpmc.model.TweetModel;
 import com.jpmc.model.UserModel;
 import com.jpmc.service.UserService;
 import io.swagger.annotations.ApiOperation;

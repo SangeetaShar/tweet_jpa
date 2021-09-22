@@ -2,7 +2,6 @@ package com.jpmc.web.controller;
 
 import com.jpmc.entity.User;
 import com.jpmc.model.AuthenticationRequest;
-import com.jpmc.model.ChangePassword;
 import com.jpmc.model.UserTokenState;
 import com.jpmc.security.SecurityUser;
 import com.jpmc.security.TokenHelper;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping( value = "/api")

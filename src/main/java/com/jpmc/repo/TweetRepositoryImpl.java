@@ -2,15 +2,12 @@ package com.jpmc.repo;
 
 import com.jpmc.entity.Tweet;
 import com.jpmc.entity.User;
-import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
-
 import java.util.List;
 
 @Repository

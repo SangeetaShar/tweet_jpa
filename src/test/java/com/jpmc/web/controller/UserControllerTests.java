@@ -1,10 +1,9 @@
 package com.jpmc.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jpmc.utils.TestHelper;
 import com.jpmc.entity.User;
 import com.jpmc.service.UserService;
-import com.jpmc.web.controller.UserController;
+import com.jpmc.utils.TestHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

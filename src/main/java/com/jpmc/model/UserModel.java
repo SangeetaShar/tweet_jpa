@@ -1,7 +1,6 @@
 package com.jpmc.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jpmc.entity.Tweet;
 import com.jpmc.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

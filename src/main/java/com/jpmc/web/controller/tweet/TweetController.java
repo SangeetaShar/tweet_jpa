@@ -1,21 +1,18 @@
 package com.jpmc.web.controller.tweet;
 
 
-import com.jpmc.config.TimeProvider;
 import com.jpmc.entity.Tweet;
 import com.jpmc.model.TweetModel;
 import com.jpmc.model.TweetRequestBody;
 import com.jpmc.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
