@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class TweetRepositoryImpl implements CustomTweetRepository{
+public class CustomTweetRepositoryImpl implements CustomTweetRepository{
 
     @PersistenceContext
     EntityManager entityManager;

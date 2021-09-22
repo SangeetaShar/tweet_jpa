@@ -25,11 +25,6 @@ public class TweetService {
         this.userService = userService;
     }
 
-    public Optional<TweetModel> getTweetById(Long id) {
-        Optional<Tweet> byId = tweetRepository.findById(id);
-        return byId.isPresent() ? Optional.of(new TweetModel(byId.get())) : Optional.empty();
-    }
-
     public List<TweetModel> getAllTweets(Principal user) {
         User byUsername = this.userService.findByUsername(user.getName());
         List<Tweet> tweetRepositoryAll = tweetRepository.findTweetByOtherUserOrderByModifyDate(byUsername);

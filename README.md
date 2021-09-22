@@ -54,8 +54,6 @@ UserApi is only available to Admin user.
 
 # API endpoints
 
-* /api-endpoints.md
-
 There are 3 different endpoints
 
 ### Authentication 
